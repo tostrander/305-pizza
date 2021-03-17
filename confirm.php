@@ -127,6 +127,9 @@
                 return;
             }
 
+            //Order was successfully placed:  get ID of the order
+            $id = mysqli_insert_id($cnxn);
+
             //Print summary
             thanks($fname);
             //thanks();
@@ -135,6 +138,7 @@
             //echo "<h3>Thank you for your order, ".$_POST['fname']."!</h3>";
 
             echo "<h4>Order Summary:</h4>";
+            echo "<p>Order ID: $id</p>";
             echo "<p>Name: $fname $lname</p>";
             if ($method == 'delivery') {
                 echo "<p>Address: $address</p>";
@@ -149,10 +153,12 @@
 
 
             //Send email to Poppa
+            $url = "https://tostrander.greenriverdev.com/305d/pizza/view.php?id=$id"; //***//
             $emailTo = 'tostrander@greenriver.edu';
             $emailFrom = 'Poppa\'s Pizza <poppaspizza@gmail.com>';
             $emailBody = "An order has been placed\r\n";
             $emailBody .= "Name: $fname $lname\r\n";
+            $emailBody .= "View order at: $url";                               //***//
             $emailSubject = 'New Pizza Order';
             $headers = "From: $emailFrom\r\n";
             $success = mail($emailTo, $emailSubject, $emailBody, $headers);
